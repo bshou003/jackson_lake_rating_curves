@@ -28,9 +28,9 @@ nlm_dis <- function(df, site_num){
   coefficients <- coef(lm_init)
   intercept <- coefficients[1]
   slope <- coefficients[2]
-  model <- nlsLM(discharge.m.s ~ a * (gauge.m -h0)^b,
+  model <- nlsLM(discharge.m.s ~ a * (gauge.m)^b,
                  data = df,
-                 start = list(a = intercept, b = slope, h0 = 0),
+                 start = list(a = intercept, b = slope),
                  control = nls.lm.control(maxiter = 100))
   
   h_seq <- seq(min(df$gauge.m), max(df$gauge.m), length.out = 100)
@@ -41,11 +41,10 @@ nlm_dis <- function(df, site_num){
     labs(x ="Stage (m)", 
          y = "Discharge (m³/s)")+
     geom_line(aes(x = h_seq, y = Q_pred))
-              
+  
   coefficients <- coef(model)
   model_coeff <- data_frame(a = coefficients[1],
-                            b = coefficients[2],
-                            h0 = coefficients[3])
+                            b = coefficients[2])
   return(model_coeff)
 }
 
@@ -57,7 +56,7 @@ lm_dis <- function(df, site_num){
   df <-  df %>% filter(df$site == site_num)
   #Quick plot to check the data
   plot(df$gauge.m, df$discharge.m.s)
-  model <- lm(discharge.m.s ~ gauge.m, data = df)
+  model <- lm(discharge.m.s ~ 0 + gauge.m, data = df)
   h_seq <- seq(min(df$gauge.m), max(df$gauge.m), length.out = 100)
   Q_pred <- predict(model, newdata = data.frame(gauge.m = h_seq))
   
@@ -68,8 +67,8 @@ lm_dis <- function(df, site_num){
     geom_line(aes(x = h_seq, y = Q_pred))
   
   coefficients <- coef(model)
-  model_coeff <- data_frame(intercept = coefficients[1],
-                            slope = coefficients[2])
+  model_coeff <- data_frame(intercept = 0,
+                            slope = coefficients[1])
   return(model_coeff)
 }
 ############### Functions for Plots
@@ -84,9 +83,9 @@ nlm_dis_plot <- function(df, site_num){
   coefficients <- coef(lm_init)
   intercept <- coefficients[1]
   slope <- coefficients[2]
-  model <- nlsLM(discharge.m.s ~ a * (gauge.m -h0)^b,
+  model <- nlsLM(discharge.m.s ~ a * (gauge.m)^b,
                  data = df,
-                 start = list(a = intercept, b = slope, h0 = 0),
+                 start = list(a = intercept, b = slope),
                  control = nls.lm.control(maxiter = 100))
   
   h_seq <- seq(min(df$gauge.m), max(df$gauge.m), length.out = 100)
@@ -114,7 +113,7 @@ lm_dis_plot <- function(df, site_num){
   df <-  df %>% filter(df$site == site_num)
   #Quick plot to check the data
   plot(df$gauge.m, df$discharge.m.s)
-  model <- lm(discharge.m.s ~ gauge.m, data = df)
+  model <- lm(discharge.m.s ~ 0 + gauge.m, data = df)
   h_seq <- seq(min(df$gauge.m), max(df$gauge.m), length.out = 100)
   Q_pred <- predict(model, newdata = data.frame(gauge.m = h_seq))
   
@@ -133,21 +132,37 @@ lm_dis_plot <- function(df, site_num){
 }
 
 pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head, coef_df){
+if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
   baro <- read.csv(data_baro, skip = skip_baro) %>% 
     reframe(#Converting mm.hg to psi to water column equvalent (m)
-           #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
-           baro_meter = Barometric.Pressure..mmHg. *  0.01933678 * 0.703070,
-           Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S"))
+      #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
+      baro_meter = Barometric.Pressure..mmHg. *  0.01933678 * 0.703070,
+      Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S"))
   
   df <- read.csv(data_head, skip = skip_head) %>% 
     mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
     merge(baro) %>% 
     mutate(depth.m = Depth..cm./100,
            depth.m = depth.m - baro_meter,
-           discharge = coef_df$a * (depth.m - coef_df$h0)^coef_df$b)
-    
+           discharge = coef_df$a * (depth.m)^coef_df$b)
+} else {
+  baro <- read.csv(data_baro, skip = skip_baro) %>% 
+    reframe(#Converting mm.hg to psi to water column equvalent (m)
+      #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
+      baro_meter = Barometric.Pressure..mmHg. *  0.01933678 * 0.703070,
+      Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S"))
+  
+  df <- read.csv(data_head, skip = skip_head) %>% 
+    mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
+    merge(baro) %>% 
+    mutate(depth.m = Depth..cm./100,
+           depth.m = depth.m - baro_meter,
+           discharge = coef_df$a * (depth.m)^coef_df$b)
+}
   return(df)
 }
+
+
 
 pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head, coef_df){
   if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
@@ -178,11 +193,8 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$intercept + (depth.m * coef_df$slope))
   }
-  
   return(df)
 }
-
-
 
 ######## Model Plots #########
 plot_10 <-lm_dis_plot(Qall, 10)
@@ -213,9 +225,11 @@ ggarrange(plot_10, plot_16, plot_17, plot_19, plot_20, plot_22, plot_27, plot_30
           plot_38, plot_40, ncol = 5, nrow =2)
 
 
-site_10 <- pressure_to_discharge_lm("Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
-                                    "Arizona.Creek_2025-08-11_19-34-09-111.csv",
-                                    69, coef_10)
+
+
+# site_10 <- pressure_to_discharge_lm("Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
+#                                     "Arizona.Creek_2025-08-11_19-34-09-111.csv",
+#                                     69, coef_10)
 site_16 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
                                      70, coef_16)
@@ -233,12 +247,11 @@ site_22<- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-
                                    70, coef_22)
 site_27 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Moran.Creek_Append_2025-08-12_11-23-07-530.csv",
-                                     70, coef_38)
+                                     70, coef_38) %>% 
+  filter(Seconds < 16416900 | Seconds > 17468100)
 site_30 <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                     "Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
                                     70, coef_30)
-
-
 site_38 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Waterfalls.Canyon_Append_2025-08-12_13-26-01-870.csv",
                                      71, coef_38)
@@ -246,19 +259,22 @@ site_40 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-1
                                      "North.Moran_Append_2025-08-12_12-15-13-793.csv",
                                      70, coef_40)
 
-ggplot()+
+polecat <- ggplot()+
   geom_line(data = site_16, aes(x = Date.and.Time, y = discharge))
-ggplot()+
- geom_line(data = site_17, aes(x = Date.and.Time, y = discharge))
-ggplot()+
-    geom_line(data = site_20, aes(x = Date.and.Time, y = discharge))
-ggplot()+
+# ggplot()+
+#   geom_line(data = site_17, aes(x = Date.and.Time, y = discharge))
+moose <- ggplot()+
+  geom_line(data = site_20, aes(x = Date.and.Time, y = discharge))
+colter <- ggplot()+
   geom_line(data = site_22, aes(x = Date.and.Time, y = discharge))
-ggplot()+            
+moran <- ggplot()+            
   geom_line(data = site_27, aes(x = Date.and.Time, y = discharge))
-not <- ggplot()+  
+bearpaw <- ggplot()+  
   geom_line(data = site_30, aes(x = Date.and.Time, y = discharge))
-ggplot()+
+waterfalls <- ggplot()+
   geom_line(data = site_38, aes(x = Date.and.Time, y = discharge))
-ggplot()+
+northmoran <- ggplot()+
   geom_line(data = site_40, aes(x = Date.and.Time, y = discharge))
+
+ggarrange(polecat, moose, colter, moran, bearpaw, waterfalls, northmoran)
+
