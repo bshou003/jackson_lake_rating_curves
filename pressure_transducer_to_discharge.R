@@ -195,8 +195,6 @@ ggarrange(plot_10, plot_16, plot_17, plot_19, plot_20, plot_22, plot_27, plot_30
           plot_38, plot_40, ncol = 5, nrow =2)
 
 
-
-
 site_10 <- pressure_to_discharge_lm("Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
                                     "Arizona.Creek_2025-08-11_19-34-09-111.csv",
                                     69, coef_10)
