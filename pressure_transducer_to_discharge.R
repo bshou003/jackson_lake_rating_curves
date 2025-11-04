@@ -166,6 +166,35 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
   return(df)
 }
 
+if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
+  baro <- read.csv(data_baro, skip = skip_baro) %>% 
+    reframe(#Converting mm.hg to psi to water column equvalent (m)
+      #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
+      baro_meter = Barometric.Pressure..mmHg. *  0.01933678 * 0.703070,
+      Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S"))
+  
+  df <- read.csv(data_head, skip = skip_head) %>% 
+    mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
+    merge(baro) %>% 
+    mutate(depth.m = Depth..cm./100,
+           depth.m = depth.m - baro_meter,
+           discharge = coef_df$intercept + (depth.m * coef_df$slope))
+  
+} else {
+  baro <- read.csv(data_baro, skip = skip_baro) %>% 
+    reframe(#Converting mm.hg to psi to water column equvalent (m)
+      #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
+      baro_meter = Barometric.Pressure..mmHg. *  0.01933678 * 0.703070,
+      Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S"))
+  
+  df <- read.csv(data_head, skip = skip_head) %>% 
+    mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
+    merge(baro) %>% 
+    mutate(depth.m = Depth..cm./100,
+           depth.m = depth.m - baro_meter,
+           discharge = coef_df$intercept + (depth.m * coef_df$slope))
+}
+
 ######## Model Plots #########
 plot_10 <-lm_dis_plot(Qall, 10)
 plot_16 <- nlm_dis_plot(Qall, 16)
