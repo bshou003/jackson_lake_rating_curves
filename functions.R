@@ -176,7 +176,15 @@ lm_dis_plot_forced_zero <- function(df, site_num){
     scale_x_continuous(breaks = scales::pretty_breaks(n = 4),
                        labels = scales::number_format(accuracy = 0.01))+
     ggtitle(paste("Rating Curve for Site", site_num))
-  return(plot)
+  
+  coefficients <- coef(model)
+  model_coeff <- data_frame(intercept = coefficients[1],
+                            slope = coefficients[2])
+  return(list(
+    plot = plot,
+    coefficients = model_coeffs
+  ))
+  #return(plot)
 }
 
 ####### The following two functions do not force the intercept.
