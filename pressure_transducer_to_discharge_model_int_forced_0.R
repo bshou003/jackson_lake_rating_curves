@@ -13,8 +13,9 @@ Qall <- read.csv("discharge_stage_height.csv")
 ################# Quick Plot to Visulize Data ######################
 ggplot()+
   geom_point(data = Qall, aes(x = discharge.m.s, y = gauge.m, color = event))+
-  facet_wrap(~site, scales = "free")+
-  geom_smooth(method = "lm", col = "blue") 
+  facet_wrap(~site, scales = "free") +
+  labs(y = "Stage Height (m)",
+       x = expression(paste("Discharge"(m^3/s))))
 
 ##################### Functions #############################
 ###### Non-Linear Model #######
@@ -38,8 +39,8 @@ nlm_dis <- function(df, site_num){
   
   ggplot()+
     geom_point(data = df, aes(x = gauge.m, y = discharge.m.s))+
-    labs(x ="Stage (m)", 
-         y = "Discharge (m³/s)")+
+    labs(y = "Stage Height (m)",
+         x = expression(paste("Discharge"(m^3/s))))+
     geom_line(aes(x = h_seq, y = Q_pred))
   
   coefficients <- coef(model)
