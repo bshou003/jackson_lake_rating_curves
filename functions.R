@@ -143,7 +143,7 @@ lm_dis <- function(df, site_num){
 }
 ############ Converting the pressure head to Discharge #################
 #Converting the non-linear model
-pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head, coef_df){
+pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head, coef_df, filename){
   if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
     baro <- read.csv(data_baro, skip = skip_baro) %>% 
       reframe(#Converting mm.hg to psi to water column equvalent (m)
@@ -171,18 +171,12 @@ pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head
              depth.m = depth.m - baro_meter,
              discharge = coef_df$a * (depth.m)^coef_df$b)
   }
-  plot <- ggplot()+
-    geom_line(data = df, aes(x = Date.and.Time, y = discharge))+
-    labs(x = "",
-         y = expression(paste("Discharge"(m^3/s))))
-  return(list(
-    plot = plot,
-    df = df
-  ))
+  write_csv(df, filename)
+  return(df)
 }
 
 #Converting the linear model
-pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head, coef_df){
+pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head, coef_df, filename){
   if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
     baro <- read.csv(data_baro, skip = skip_baro) %>% 
       reframe(#Converting mm.hg to psi to water column equvalent (m)
@@ -211,12 +205,6 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$intercept + (depth.m * coef_df$slope))
   }
-  plot <- ggplot()+
-    geom_line(data = df, aes(x = Date.and.Time, y = discharge))+
-    labs(x = "",
-         y = expression(paste("Discharge"(m^3/s))))
-  return(list(
-    plot = plot,
-    df = df
-  ))
+  write_csv(df, filename)
+  return(df)
 }
