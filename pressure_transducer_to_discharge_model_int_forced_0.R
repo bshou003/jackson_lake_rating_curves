@@ -197,33 +197,38 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
   return(df)
 }
 
+
+
+source("functions.R")
 ######## Model Plots #########
-plot_10 <-lm_dis_plot(Qall, 10)
-plot_16 <- nlm_dis_plot(Qall, 16)
-plot_17 <- lm_dis_plot(Qall, 17)
-plot_19 <- lm_dis_plot(Qall, 19)
-plot_20 <- lm_dis_plot(Qall, 20)
-plot_22 <- lm_dis_plot(Qall, 22)
-plot_27 <- nlm_dis_plot(Qall, 27)
-plot_30 <- lm_dis_plot(Qall, 30)
-plot_38 <- nlm_dis_plot(Qall, 38)
-plot_40 <- nlm_dis_plot(Qall, 40)
+plot_10 <-lm_dis_plot_forced_zero(Qall, 10)
+plot_16 <- nlm_dis_plot_forced_zero(Qall, 16)
+plot_17 <- lm_dis_plot_forced_zero(Qall, 17)
+plot_19 <- lm_dis_plot_forced_zero(Qall, 19)
+plot_20 <- lm_dis_plot_forced_zero(Qall, 20)
+plot_22 <- lm_dis_plot_forced_zero(Qall, 22)
+plot_27 <- nlm_dis_plot_forced_zero(Qall, 27)
+plot_30 <- lm_dis_plot_forced_zero(Qall, 30)
+plot_38 <- nlm_dis_plot_forced_zero(Qall, 38)
+plot_40 <- nlm_dis_plot_forced_zero(Qall, 40)
 
 ######### Model Coefficients ########
-coef_10 <-lm_dis(Qall, 10)
-coef_16 <- nlm_dis(Qall, 16)
-coef_17 <- lm_dis(Qall, 17)
-coef_19 <- lm_dis(Qall, 19)
-coef_20 <- lm_dis(Qall, 20)
-coef_22 <- lm_dis(Qall, 22)
-coef_27 <- nlm_dis(Qall, 27)
-coef_30 <- lm_dis(Qall, 30)
-coef_38 <- nlm_dis(Qall, 38)
-coef_40 <- nlm_dis(Qall, 40)
+coef_10 <-lm_dis_forced_zero(Qall, 10)
+coef_16 <- nlm_dis_forced_zero(Qall, 16)
+coef_17 <- lm_dis_forced_zero(Qall, 17)
+coef_19 <- lm_dis_forced_zero(Qall, 19)
+coef_20 <- lm_dis_forced_zero(Qall, 20)
+coef_22 <- lm_dis_forced_zero(Qall, 22)
+coef_27 <- nlm_dis_forced_zero(Qall, 27)
+coef_30 <- lm_dis_forced_zero(Qall, 30)
+coef_38 <- nlm_dis_forced_zero(Qall, 38)
+coef_40 <- nlm_dis_forced_zero(Qall, 40)
 
 ########### Data and Model Plots
-ggarrange(plot_10, plot_16, plot_17, plot_19, plot_20, plot_22, plot_27, plot_30,
-          plot_38, plot_40, ncol = 5, nrow =2)
+ggarrange(plot_10[["plot"]], plot_16[["plot"]], plot_17[["plot"]], 
+          plot_19[["plot"]], plot_20[["plot"]], plot_22[["plot"]],
+          plot_27[["plot"]], plot_30[["plot"]], plot_38[["plot"]],
+          plot_40[["plot"]], ncol = 5, nrow =2)
 
 
 
@@ -233,32 +238,32 @@ ggarrange(plot_10, plot_16, plot_17, plot_19, plot_20, plot_22, plot_27, plot_30
 #                                     69, coef_10)
 site_16 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
-                                     70, coef_16)
+                                     70, plot_16[["model_coeff"]])
 site_17<- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "Glade.Creek_Append_2025-08-11_17-02-01-504.csv",
-                                   72, coef_17)
+                                   72, plot_17[["model_coeff"]])
 # site_19<- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
 #                                    "Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
 #                                    70, coef_30)
 site_20<- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "Moose.Creek_Append_2025-08-12_15-09-09-375.csv",
-                                   70, coef_20)
+                                   70, plot_20[["model_coeff"]])
 site_22<- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "Colter.Canyon_Append_2025-08-12_14-09-54-941.csv",
-                                   70, coef_22)
+                                   70, plot_22[["model_coeff"]])
 site_27 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Moran.Creek_Append_2025-08-12_11-23-07-530.csv",
-                                     70, coef_38) %>% 
+                                     70, plot_38[["model_coeff"]]) %>% 
   filter(Seconds < 16416900 | Seconds > 17468100)
 site_30 <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                     "Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
-                                    70, coef_30)
+                                    70, plot_30[["model_coeff"]])
 site_38 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Waterfalls.Canyon_Append_2025-08-12_13-26-01-870.csv",
-                                     71, coef_38)
+                                     71, plot_38[["model_coeff"]])
 site_40 <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "North.Moran_Append_2025-08-12_12-15-13-793.csv",
-                                     70, coef_40)
+                                     70, plot_40[["model_coeff"]])
 
 polecat <- ggplot()+
   geom_line(data = site_16, aes(x = Date.and.Time, y = discharge))
