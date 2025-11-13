@@ -208,3 +208,33 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
   write_csv(df, filename)
   return(df)
 }
+
+clean_discharge <- function(discharge_data, var1, var2, var3, var4,
+                            val1, val2, val3, val4, value_col) {
+  df <- read.csv(discharge_data) %>% 
+    mutate(Date.and.Time = as.POSIXct(Date.and.Time, format = "%Y-%m-%dT%H:%M:%OSZ", tz = "UTC"))
+  
+  df <- df %>%
+    mutate(adjusted_discharge = ifelse(
+      ({{ var1 }} < val1 & {{ var2 }} > val2) |
+        ({{ var3 }} < val3 & {{ var4 }} > val4),
+      NA,
+      {{ value_col }}
+    ))
+
+  return(df)
+}
+
+plot_discharge <- function(df){
+  a <-ggplot()+
+    geom_line(data = df, aes(x = Date.and.Time, y = baro_meter))
+  b <-ggplot()+
+    geom_line(data = df, aes(x = Date.and.Time, y = Temperature..C.))
+  c <- ggplot()+
+    geom_line(data = df, aes(x = Date.and.Time, y = Pressure..kPa.))
+  ard <- ggplot()+
+    geom_line(data = df, aes(x = Date.and.Time, y = discharge), color = "red")+
+    geom_line(data = df, aes(x = Date.and.Time, y = adjusted_discharge))
+  q <- ggarrange(a,b,c, ard,  ncol = 1, nrow = 4)
+  return(q)
+  }
