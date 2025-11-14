@@ -68,68 +68,66 @@ site_40_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-
                                      70, site_40[["model_coeff"]], "final_data/site_40_discharge.csv")
 
 ########### Cleaning Data ###################
-#Site 20 is cleaned removing negative discharge values.
-st20rd <- st20 %>%
-  mutate(adjusted_discharge = ifelse(discharge < 0,
-                                     NA,  
-                                     discharge))
-plot_discharge(st20rd)
-write_csv(st20rd, "site_20_discharge.csv")
-#Site 22 is cleaned removing negative discharge values.
-st22rd <- st22 %>%
-  mutate(adjusted_discharge = ifelse(discharge < 0,
-                                     NA,  
-                                     discharge))
-plot_discharge(st22rd)
-write_csv(st22rd, "site_22_discharge.csv")
-#Site 27 is cleaned removing inplausibly high discharge values.
-st27rd <- st27 %>%
-  mutate(adjusted_discharge = discharge,
-         adjusted_discharge = ifelse(row_number() %in% 18226:19419, NA, adjusted_discharge))
-plot_discharge(st27rd)
-write_csv(st27rd, "site_27_discharge.csv")
-#Site 30 is cleaned removing negative discharge values.
-st30rd <- st30 %>%
-  mutate(adjusted_discharge = ifelse(discharge < 0,
-                                     NA,  
-                                     discharge))
-write_csv(st30rd, "site_30_discharge.csv")
-plot_discharge(st30rd)
+site_10_discharge <- read_csv("final_data/site_10_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
 
-##########Rename discharge and adjusted discharge for uniform ########
-site_10_discharge <- read_csv("site_10_discharge.csv") %>% 
+site_16_discharge <- read_csv("final_data/site_16_discharge.csv") %>% 
   rename(raw_discharge = discharge) %>% 
   mutate(discharge = raw_discharge)
-st16 <- read_csv("site_16_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
-st17 <- read_csv("site_17_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
-st20 <- read_csv("site_20_discharge.csv") %>% 
+
+site_17_discharge <- read_csv("final_data/site_17_discharge.csv") %>% 
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
-st22 <- read_csv("site_22_discharge.csv") %>% 
+
+#Site 20 is cleaned removing negative discharge values.
+site_20_discharge <- read_csv("final_data/site_20_discharge.csv") %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
-st27 <- read_csv("site_27_discharge.csv")%>% 
+
+#Site 22 is cleaned removing negative discharge values.
+site_22_discharge <- read_csv("final_data/site_22_discharge.csv") %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
-st30 <- read_csv("site_30_discharge.csv") %>% 
+
+#Site 27 is cleaned removing inplausibly high discharge values.
+site_27_discharge <- read_csv("final_data/site_27_discharge.csv") %>%
+  mutate(adjusted_discharge = discharge,
+         adjusted_discharge = ifelse(row_number() %in% 18226:19419, NA, adjusted_discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
-st38 <- read_csv("site_38_discharge.csv") %>% 
+
+#Site 30 is cleaned removing negative discharge values.
+site_30_discharge <- read_csv("final_data/site_30_discharge.csv") %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))%>% 
+  rename(raw_discharge = discharge,
+         discharge = adjusted_discharge)
+
+site_38_discharge <- read_csv("final_data/site_38_discharge.csv") %>% 
   rename(raw_discharge = discharge) %>% 
   mutate(discharge = raw_discharge)
-st40 <- read_csv("site_40_discharge.csv") %>% 
+
+site_40_discharge <- read_csv("final_data/site_40_discharge.csv") %>% 
   rename(raw_discharge = discharge) %>% 
   mutate(discharge = raw_discharge)
-write_csv(st10, "final_data/site_10_discharge.csv")
-write_csv(st16, "final_data/site_16_discharge.csv")
-write_csv(st17, "final_data/site_17_discharge.csv")
-write_csv(st20, "final_data/site_20_discharge.csv")
-write_csv(st22, "final_data/site_22_discharge.csv")
-write_csv(st27, "final_data/site_27_discharge.csv")
-write_csv(st30, "final_data/site_30_discharge.csv")
-write_csv(st38, "final_data/site_38_discharge.csv")
-write_csv(st40, "final_data/site_40_discharge.csv")
+#####Writing Final Data #######
+write_csv(site_10_discharge, "final_data/site_10_discharge.csv")
+write_csv(site_16_discharge, "final_data/site_16_discharge.csv")
+write_csv(site_17_discharge, "final_data/site_17_discharge.csv")
+write_csv(site_20_discharge, "final_data/site_20_discharge.csv")
+write_csv(site_22_discharge, "final_data/site_22_discharge.csv")
+write_csv(site_27_discharge, "final_data/site_27_discharge.csv")
+write_csv(site_30_discharge, "final_data/site_30_discharge.csv")
+write_csv(site_38_discharge, "final_data/site_38_discharge.csv")
+write_csv(site_40_discharge, "final_data/site_40_discharge.csv")
