@@ -184,7 +184,7 @@ pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head
 
 #Converting the linear model
 pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head, coef_df, filename){
-  if (data_baro == "North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
+  if (data_baro == "raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv") {
     baro <- read.csv(data_baro, skip = skip_baro) %>% 
       reframe(#Converting mm.hg to psi to water column equvalent (m)
         #https://www.solinst.com/products/dataloggers-and-telemetry/3001-levelogger-series/operating-instructions/user-guide/8-data-compensation/8-2-manual-barometric-compensation.php
