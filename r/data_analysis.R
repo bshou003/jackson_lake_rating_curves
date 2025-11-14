@@ -42,30 +42,30 @@ ggarrange(site_10[["plot"]], site_16[["plot"]], site_17[["plot"]],
 site_10_dis <- pressure_to_discharge_lm("raw_data/Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
                                     "raw_data/Arizona.Creek_2025-08-11_19-34-09-111.csv",
                                     69, site_10[["model_coeff"]], "final_data/site_10_discharge.csv") 
-site_16_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                     "Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
-                                     70, site_16[["model_coeff"]], "site_16_discharge.csv")
-site_17_dis <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                   "Glade.Creek_Append_2025-08-11_17-02-01-504.csv",
-                                   72, site_17[["model_coeff"]], "site_17_discharge.csv")
-site_20_dis <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                   "Moose.Creek_Append_2025-08-12_15-09-09-375.csv",
-                                   70, site_20[["model_coeff"]], "site_20_discharge.csv")
-site_22_dis <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                   "Colter.Canyon_Append_2025-08-12_14-09-54-941.csv",
-                                   70, site_22[["model_coeff"]], "site_22_discharge.csv")
-site_27_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                     "Moran.Creek_Append_2025-08-12_11-23-07-530.csv",
-                                     70, site_38[["model_coeff"]], "site_27_discharge.csv") 
-site_30_dis <- pressure_to_discharge_lm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                    "Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
-                                    70, site_30[["model_coeff"]], "site_30_discharge.csv")
-site_38_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                     "Waterfalls.Canyon_Append_2025-08-12_13-26-01-870.csv",
-                                     71, site_38[["model_coeff"]], "site_38_discharge.csv")
-site_40_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
-                                     "North.Moran_Append_2025-08-12_12-15-13-793.csv",
-                                     70, site_40[["model_coeff"]], "site_40_discharge.csv")
+site_16_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                     "raw_data/Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
+                                     70, site_16[["model_coeff"]], "final_data/site_16_discharge.csv")
+site_17_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                   "raw_data/Glade.Creek_Append_2025-08-11_17-02-01-504.csv",
+                                   72, site_17[["model_coeff"]], "final_data/site_17_discharge.csv")
+site_20_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                   "raw_data/Moose.Creek_Append_2025-08-12_15-09-09-375.csv",
+                                   70, site_20[["model_coeff"]], "final_data/site_20_discharge.csv")
+site_22_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                   "raw_data/Colter.Canyon_Append_2025-08-12_14-09-54-941.csv",
+                                   70, site_22[["model_coeff"]], "final_data/site_22_discharge.csv")
+site_27_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                     "raw_data/Moran.Creek_Append_2025-08-12_11-23-07-530.csv",
+                                     70, site_38[["model_coeff"]], "final_data/site_27_discharge.csv") 
+site_30_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                    "raw_data/Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
+                                    70, site_30[["model_coeff"]], "final_data/site_30_discharge.csv")
+site_38_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                     "raw_data/Waterfalls.Canyon_Append_2025-08-12_13-26-01-870.csv",
+                                     71, site_38[["model_coeff"]], "final_data/site_38_discharge.csv")
+site_40_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
+                                     "raw_data/North.Moran_Append_2025-08-12_12-15-13-793.csv",
+                                     70, site_40[["model_coeff"]], "final_data/site_40_discharge.csv")
 
 ########### Cleaning Data ###################
 #Site 20 is cleaned removing negative discharge values.
