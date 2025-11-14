@@ -74,20 +74,24 @@ st20rd <- st20 %>%
                                      NA,  
                                      discharge))
 plot_discharge(st20rd)
+write_csv(st20rd, "site_20_discharge.csv")
 #Site 22 is cleaned removing negative discharge values.
 st22rd <- st22 %>%
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))
 plot_discharge(st22rd)
+write_csv(st22rd, "site_22_discharge.csv")
 #Site 27 is cleaned removing inplausibly high discharge values.
 st27rd <- st27 %>%
   mutate(adjusted_discharge = discharge,
          adjusted_discharge = ifelse(row_number() %in% 18226:19419, NA, adjusted_discharge))
 plot_discharge(st27rd)
+write_csv(st27rd, "site_27_discharge.csv")
 #Site 30 is cleaned removing negative discharge values.
 st30rd <- st30 %>%
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))
+write_csv(st30rd, "site_30_discharge.csv")
 plot_discharge(st30rd)
