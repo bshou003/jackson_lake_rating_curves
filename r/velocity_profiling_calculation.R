@@ -74,4 +74,4 @@ Qall <- Qall %>%
          gauge.m = as.numeric(gauge.cm)/100) %>% 
   subset(select = -c(Qls, gauge.cm))
 
-write_csv(Qall, "~/Documents/Data/SEaSON/discharge_stage_height.csv")
+write_csv(Qall, "raw_data/discharge_stage_height.csv")
