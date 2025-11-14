@@ -107,6 +107,10 @@ nlm_dis <- function(df, site_num){
                        labels = scales::number_format(accuracy = 0.01))+
     ggtitle(paste("Rating Curve for Site", site_num))
   
+  coefficients <- coef(model)
+  model_coeff <- data_frame(a = coefficients[1],
+                            b = coefficients[2],
+                            h0 = coefficients[3])  
   return(list(
     plot = plot,
     model_coeff = model_coeff
@@ -136,6 +140,9 @@ lm_dis <- function(df, site_num){
                        labels = scales::number_format(accuracy = 0.01))+
     ggtitle(paste("Rating Curve for Site", site_num))
   
+  coefficients <- coef(model)
+  model_coeff <- data_frame(intercept = coefficients[2],
+                            slope = coefficients[1])
   return(list(
     plot = plot,
     model_coeff = model_coeff

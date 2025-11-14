@@ -66,3 +66,28 @@ site_38_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-
 site_40_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "North.Moran_Append_2025-08-12_12-15-13-793.csv",
                                      70, site_40[["model_coeff"]], "site_40_discharge.csv")
+
+########### Cleaning Data ###################
+#Site 20 is cleaned removing negative discharge values.
+st20rd <- st20 %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))
+plot_discharge(st20rd)
+#Site 22 is cleaned removing negative discharge values.
+st22rd <- st22 %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))
+plot_discharge(st22rd)
+#Site 27 is cleaned removing inplausibly high discharge values.
+st27rd <- st27 %>%
+  mutate(adjusted_discharge = discharge,
+         adjusted_discharge = ifelse(row_number() %in% 18226:19419, NA, adjusted_discharge))
+plot_discharge(st27rd)
+#Site 30 is cleaned removing negative discharge values.
+st30rd <- st30 %>%
+  mutate(adjusted_discharge = ifelse(discharge < 0,
+                                     NA,  
+                                     discharge))
+plot_discharge(st30rd)
