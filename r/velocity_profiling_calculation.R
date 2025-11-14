@@ -60,8 +60,8 @@ ggplot(Qall, aes(ID, Qls)) +
 
 
 
-salt_dilution <- readxl::read_excel("~/Documents/Data/SEaSON/salt.dilution.discharge.values.xlsx")
-stage_heights <- read.csv("~/Documents/Data/SEaSON/stage_heights.csv")
+salt_dilution <- readxl::read_excel("raw_data/salt_dilution_discharge_values.csv")
+stage_heights <- read.csv("raw_data/stage_heights.csv")
 
 a <- files
 Qall <- Qall %>% 
