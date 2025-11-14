@@ -8,8 +8,8 @@ library(broom)
 library(ggpubr)
 library(scales)
 ####################### Call Data #################################
-source("functions.R")
-Qall <- read.csv("discharge_stage_height.csv")
+source("r/functions.R")
+Qall <- read.csv("raw_data/discharge_stage_height.csv")
 
 ################# Quick Plot to Visulize Data ######################
 ggplot()+
@@ -97,7 +97,7 @@ write_csv(st30rd, "site_30_discharge.csv")
 plot_discharge(st30rd)
 
 ##########Rename discharge and adjusted discharge for uniform ########
-st10 <- read_csv("site_10_discharge.csv") %>% 
+site_10_discharge <- read_csv("site_10_discharge.csv") %>% 
   rename(raw_discharge = discharge) %>% 
   mutate(discharge = raw_discharge)
 st16 <- read_csv("site_16_discharge.csv") %>% 
@@ -124,12 +124,12 @@ st38 <- read_csv("site_38_discharge.csv") %>%
 st40 <- read_csv("site_40_discharge.csv") %>% 
   rename(raw_discharge = discharge) %>% 
   mutate(discharge = raw_discharge)
-write_csv(st10, "site_10_discharge.csv")
-write_csv(st16, "site_16_discharge.csv")
-write_csv(st17, "site_17_discharge.csv")
-write_csv(st20, "site_20_discharge.csv")
-write_csv(st22, "site_22_discharge.csv")
-write_csv(st27, "site_27_discharge.csv")
-write_csv(st30, "site_30_discharge.csv")
-write_csv(st38, "site_38_discharge.csv")
-write_csv(st40, "site_40_discharge.csv")
+write_csv(st10, "final_data/site_10_discharge.csv")
+write_csv(st16, "final_data/site_16_discharge.csv")
+write_csv(st17, "final_data/site_17_discharge.csv")
+write_csv(st20, "final_data/site_20_discharge.csv")
+write_csv(st22, "final_data/site_22_discharge.csv")
+write_csv(st27, "final_data/site_27_discharge.csv")
+write_csv(st30, "final_data/site_30_discharge.csv")
+write_csv(st38, "final_data/site_38_discharge.csv")
+write_csv(st40, "final_data/site_40_discharge.csv")
