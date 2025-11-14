@@ -39,9 +39,9 @@ ggarrange(site_10[["plot"]], site_16[["plot"]], site_17[["plot"]],
           site_27[["plot"]], site_30[["plot"]], site_38[["plot"]],
           site_40[["plot"]], ncol = 5, nrow =2)
 
-site_10_dis <- pressure_to_discharge_lm("Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
-                                    "Arizona.Creek_2025-08-11_19-34-09-111.csv",
-                                    69, site_10[["model_coeff"]], "site_10_discharge.csv") 
+site_10_dis <- pressure_to_discharge_lm("raw_data/Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
+                                    "raw_data/Arizona.Creek_2025-08-11_19-34-09-111.csv",
+                                    69, site_10[["model_coeff"]], "final_data/site_10_discharge.csv") 
 site_16_dis <- pressure_to_discharge_nlm("North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
                                      70, site_16[["model_coeff"]], "site_16_discharge.csv")
