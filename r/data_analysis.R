@@ -95,3 +95,41 @@ st30rd <- st30 %>%
                                      discharge))
 write_csv(st30rd, "site_30_discharge.csv")
 plot_discharge(st30rd)
+
+##########Rename discharge and adjusted discharge for uniform ########
+st10 <- read_csv("site_10_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
+st16 <- read_csv("site_16_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
+st17 <- read_csv("site_17_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
+st20 <- read_csv("site_20_discharge.csv") %>% 
+  rename(raw_discharge = discharge,
+         discharge = adjusted_discharge)
+st22 <- read_csv("site_22_discharge.csv") %>% 
+  rename(raw_discharge = discharge,
+         discharge = adjusted_discharge)
+st27 <- read_csv("site_27_discharge.csv")%>% 
+  rename(raw_discharge = discharge,
+         discharge = adjusted_discharge)
+st30 <- read_csv("site_30_discharge.csv") %>% 
+  rename(raw_discharge = discharge,
+         discharge = adjusted_discharge)
+st38 <- read_csv("site_38_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
+st40 <- read_csv("site_40_discharge.csv") %>% 
+  rename(raw_discharge = discharge) %>% 
+  mutate(discharge = raw_discharge)
+write_csv(st10, "site_10_discharge.csv")
+write_csv(st16, "site_16_discharge.csv")
+write_csv(st17, "site_17_discharge.csv")
+write_csv(st20, "site_20_discharge.csv")
+write_csv(st22, "site_22_discharge.csv")
+write_csv(st27, "site_27_discharge.csv")
+write_csv(st30, "site_30_discharge.csv")
+write_csv(st38, "site_38_discharge.csv")
+write_csv(st40, "site_40_discharge.csv")
