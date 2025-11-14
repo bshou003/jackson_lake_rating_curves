@@ -6,14 +6,14 @@ library(here)
 library(broom)
 
 # This steps gets a list of all files in the Data/Velocity.Profiling folder. This will generate a vector with 3 entries, one for each of the cross sections you did. here() references the folder the csv files are stored in.
-files <- list.files(here("~/Documents/Data/SEaSON/Data"), recursive=TRUE, pattern = ".csv", full.names=FALSE)
+files <- list.files(here("/raw_data/velocity_profiling"), recursive=TRUE, pattern = ".csv", full.names=FALSE)
 
 # create empty df with one column Qls that will be filled with discharge values
 Qall <- tibble(Qls=numeric())
 for (ii in files) {
   
   # read in each file; the ii is the name of the file to be read in during each iteration
-  Qdat <- read_csv(here("~/Documents/Data/SEaSON/Data", ii), show_col_types = FALSE)
+  Qdat <- read_csv(here("/raw_data/velocity_profiling", ii), show_col_types = FALSE)
   
   # calculate difference between subsequent values and divide by two
   lag1_diff <- diff(Qdat$Width.m, lag = 1) / 2
