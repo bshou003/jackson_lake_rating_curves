@@ -41,86 +41,101 @@ ggarrange(site_10[["plot"]], site_16[["plot"]], site_17[["plot"]],
 
 site_10_dis <- pressure_to_discharge_lm("raw_data/Arizona.Creek.Baro_2025-08-11_19-45-18-131.csv", 63,
                                     "raw_data/Arizona.Creek_2025-08-11_19-34-09-111.csv",
-                                    69, site_10[["model_coeff"]], "final_data/site_10_discharge.csv") 
+                                    69, site_10[["model_coeff"]], "uncleaned_final_data/site_10_discharge.csv") 
 site_16_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "raw_data/Polecat.Creek_Append_2025-08-11_18-34-20-754.csv",
-                                     70, site_16[["model_coeff"]], "final_data/site_16_discharge.csv")
+                                     70, site_16[["model_coeff"]], "uncleaned_final_data/site_16_discharge.csv")
 site_17_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "raw_data/Glade.Creek_Append_2025-08-11_17-02-01-504.csv",
-                                   72, site_17[["model_coeff"]], "final_data/site_17_discharge.csv")
+                                   72, site_17[["model_coeff"]], "uncleaned_final_data/site_17_discharge.csv")
 site_20_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "raw_data/Moose.Creek_Append_2025-08-12_15-09-09-375.csv",
-                                   70, site_20[["model_coeff"]], "final_data/site_20_discharge.csv")
+                                   70, site_20[["model_coeff"]], "uncleaned_final_data/site_20_discharge.csv")
 site_22_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                    "raw_data/Colter.Canyon_Append_2025-08-12_14-09-54-941.csv",
-                                   70, site_22[["model_coeff"]], "final_data/site_22_discharge.csv")
+                                   70, site_22[["model_coeff"]], "uncleaned_final_data/site_22_discharge.csv")
 site_27_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "raw_data/Moran.Creek_Append_2025-08-12_11-23-07-530.csv",
-                                     70, site_38[["model_coeff"]], "final_data/site_27_discharge.csv") 
+                                     70, site_38[["model_coeff"]], "uncleaned_final_data/site_27_discharge.csv") 
 site_30_dis <- pressure_to_discharge_lm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                     "raw_data/Bear.Paw.Creek_Append_2025-08-12_10-15-25-429.csv",
-                                    70, site_30[["model_coeff"]], "final_data/site_30_discharge.csv")
+                                    70, site_30[["model_coeff"]], "uncleaned_final_data/site_30_discharge.csv")
 site_38_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "raw_data/Waterfalls.Canyon_Append_2025-08-12_13-26-01-870.csv",
-                                     71, site_38[["model_coeff"]], "final_data/site_38_discharge.csv")
+                                     71, site_38[["model_coeff"]], "uncleaned_final_data/site_38_discharge.csv")
 site_40_dis <- pressure_to_discharge_nlm("raw_data/North.Moran.Baro_Append_2025-08-12_12-32-13-014.csv", 64,
                                      "raw_data/North.Moran_Append_2025-08-12_12-15-13-793.csv",
-                                     70, site_40[["model_coeff"]], "final_data/site_40_discharge.csv")
+                                     70, site_40[["model_coeff"]], "uncleaned_final_data/site_40_discharge.csv")
+
+ggplot()+
+  geom_line(data = site_17_discharge, aes(x= Date.and.Time, y =discharge))
 
 ########### Cleaning Data ###################
-site_10_discharge <- read_csv("final_data/site_10_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
+site_10_discharge <- read_csv("uncleaned_final_data/site_10_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 
-site_16_discharge <- read_csv("final_data/site_16_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
+site_16_discharge <- read_csv("uncleaned_final_data/site_16_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 
-site_17_discharge <- read_csv("final_data/site_17_discharge.csv") %>% 
+site_17_discharge <- read_csv("uncleaned_final_data/site_17_discharge.csv") %>% 
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
+write_csv(site_17_discharge, "uncleaned_final_data/site_17_discharge.csv")
+site_17_discharge <- read_csv("uncleaned_final_data/site_17_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
+  
 
 #Site 20 is cleaned removing negative discharge values.
-site_20_discharge <- read_csv("final_data/site_20_discharge.csv") %>%
+site_20_discharge <- read_csv("uncleaned_final_data/site_20_discharge.csv") %>%
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
+write_csv(site_20_discharge, "uncleaned_final_data/site_20_discharge.csv")
+site_20_discharge <- read_csv("uncleaned_final_data/site_20_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 
 #Site 22 is cleaned removing negative discharge values.
-site_22_discharge <- read_csv("final_data/site_22_discharge.csv") %>%
+site_22_discharge <- read_csv("uncleaned_final_data/site_22_discharge.csv") %>%
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
-
+write_csv(site_22_discharge, "uncleaned_final_data/site_22_discharge.csv")
+site_22_discharge <- read_csv("uncleaned_final_data/site_22_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 #Site 27 is cleaned removing inplausibly high discharge values.
-site_27_discharge <- read_csv("final_data/site_27_discharge.csv") %>%
+site_27_discharge <- read_csv("uncleaned_final_data/site_27_discharge.csv") %>%
   mutate(adjusted_discharge = discharge,
          adjusted_discharge = ifelse(row_number() %in% 18226:19419, NA, adjusted_discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
+write_csv(site_27_discharge, "uncleaned_final_data/site_27_discharge.csv")
+site_27_discharge <- read_csv("uncleaned_final_data/site_27_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 
 #Site 30 is cleaned removing negative discharge values.
-site_30_discharge <- read_csv("final_data/site_30_discharge.csv") %>%
+site_30_discharge <- read_csv("uncleaned_final_data/site_30_discharge.csv") %>%
   mutate(adjusted_discharge = ifelse(discharge < 0,
                                      NA,  
                                      discharge))%>% 
   rename(raw_discharge = discharge,
          discharge = adjusted_discharge)
 
-site_38_discharge <- read_csv("final_data/site_38_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
+write_csv(site_30_discharge, "uncleaned_final_data/site_30_discharge.csv")
+site_30_discharge <- read_csv("uncleaned_final_data/site_30_discharge.csv") %>% 
+  subset(select = c(Date.and.Time, Temperature..C., discharge))
 
-site_40_discharge <- read_csv("final_data/site_40_discharge.csv") %>% 
-  rename(raw_discharge = discharge) %>% 
-  mutate(discharge = raw_discharge)
+site_38_discharge <- read_csv("uncleaned_final_data/site_38_discharge.csv") %>% 
+subset(select = c(Date.and.Time, Temperature..C., discharge))
+
+site_40_discharge <- read_csv("uncleaned_final_data/site_40_discharge.csv") %>% 
+subset(select = c(Date.and.Time, Temperature..C., discharge))
 #####Writing Final Data #######
 write_csv(site_10_discharge, "final_data/site_10_discharge.csv")
 write_csv(site_16_discharge, "final_data/site_16_discharge.csv")
