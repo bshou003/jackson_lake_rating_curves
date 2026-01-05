@@ -161,7 +161,7 @@ pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head
     df <- read.csv(data_head, skip = skip_head) %>% 
       mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
       merge(baro) %>% 
-      mutate(depth.m = Depth..cm./100,
+      mutate(depth.m = Pressure..kPa. * 0.101972,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$a * (depth.m)^coef_df$b)
   } else {
@@ -174,7 +174,7 @@ pressure_to_discharge_nlm <- function(data_baro, skip_baro, data_head, skip_head
     df <- read.csv(data_head, skip = skip_head) %>% 
       mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
       merge(baro) %>% 
-      mutate(depth.m = Depth..cm./100,
+      mutate(depth.m = Pressure..kPa. * 0.101972,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$a * (depth.m)^coef_df$b)
   }
@@ -194,7 +194,7 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
     df <- read.csv(data_head, skip = skip_head) %>% 
       mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
       merge(baro) %>% 
-      mutate(depth.m = Depth..cm./100,
+      mutate(depth.m = Pressure..kPa. * 0.101972,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$intercept + (depth.m * coef_df$slope))
     
@@ -208,7 +208,7 @@ pressure_to_discharge_lm <- function(data_baro, skip_baro, data_head, skip_head,
     df <- read.csv(data_head, skip = skip_head) %>% 
       mutate(Date.and.Time = as.POSIXct(Date.and.Time, format="%m/%d/%Y %H:%M:%S")) %>% 
       merge(baro) %>% 
-      mutate(depth.m = Depth..cm./100,
+      mutate(depth.m = Pressure..kPa. * 0.101972,
              depth.m = depth.m - baro_meter,
              discharge = coef_df$intercept + (depth.m * coef_df$slope))
   }
